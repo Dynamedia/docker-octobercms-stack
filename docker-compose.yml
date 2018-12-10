@@ -1,0 +1,58 @@
+version: "3.4"
+
+services:
+  octobercms:
+    image: dynamedia/docker-octobercms
+    env_file:
+    - .env
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - redis
+    # October CMS needs to maintain state so it's a good idea to mount some volumes
+    volumes:
+    - ./data/app/storage:/var/www/app/storage/app/
+    - ./data/app/plugins:/var/www/app/plugins/
+    # - ./data/app/themes:/var/www/app/themes/
+    # In production you'll want to have https. Use a reverse proxy ssl terminator in front of this container and remove this ports directive
+    # and make sure you've done `docker network create reverse-proxy`
+    ports:
+    - 80:80
+    networks:
+      - backend
+      - reverse-proxy
+
+  redis:
+    image: dynamedia/docker-redis:latest
+    env_file:
+    - .env
+    restart: unless-stopped
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8
+    env_file:
+    - .env
+    environment:
+      MYSQL_DATABASE: ${OC_DB_DATABASE:-october}
+      MYSQL_USER: ${OC_DB_USERNAME:-october}
+      MYSQL_PASSWORD: ${OC_DB_PASSWORD:-october}
+    restart: unless-stopped
+    ports:
+      # Expose a port for this mysql instance on the host so we can tunnel in via ssh or act from the host
+    - 127.0.0.1:${MYSQL_HOST_PORT:-3306}:3306
+    volumes:
+    - ./data/mysql:/var/lib/mysql
+    - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+    - backend
+
+networks:
+  reverse-proxy:
+    external:
+      name: reverse-proxy
+  backend:
+    driver: bridge
