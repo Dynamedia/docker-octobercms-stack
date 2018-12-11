@@ -1,4 +1,5 @@
 PWD=$(printf '%q\n' "${PWD##*/}")
+PWD=${PWD/[^a-zA-Z\d\s:]/}
 
 CONTAINER=$(docker ps | awk '{print $NF}' | grep mysql | grep $PWD)
 
