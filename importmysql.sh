@@ -19,6 +19,7 @@ if [ "$TYPE" != "mysql" ] ; then
 fi
 
 if [ ! -z $USERNAME ] && [ ! -z $PASSWORD ] && [ ! -z $DATABASE ] ; then
+    docker exec -i $CONTAINER mysql -u$USERNAME -p$PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DATABASE" > /dev/null 2>&1
     docker exec -i $CONTAINER mysql -u$USERNAME -p$PASSWORD $DATABASE < $SQLFILE
 else
     printf "You must set the following variables in your .env file: \n \

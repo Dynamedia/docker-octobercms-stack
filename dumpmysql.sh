@@ -14,7 +14,7 @@ fi
 DESTPATH=$1
 
 if [ -z $DESTPATH ] ; then
-  DESTPATH="${DATABASE}.$(date +"%Y_%m_%d_%H%M").sql"
+  DESTPATH="sqldump/${DATABASE}.$(date +"%Y_%m_%d_%H%M").sql"
 fi
 
 if [ -z $(echo $DESTPATH | grep ".sql$") ] ; then
