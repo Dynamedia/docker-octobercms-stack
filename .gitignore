@@ -4,3 +4,5 @@ data/mysql
 data/redis
 data/app/plugins
 data/app/themes
+# We might delete or modify the line above but we'll want to always exclude node_modules
+data/app/themes/*/node_modules
