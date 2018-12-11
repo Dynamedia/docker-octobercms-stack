@@ -1,4 +1,6 @@
 .env
 .idea
-data
-
+data/mysql
+data/redis
+data/app/plugins
+data/app/themes
