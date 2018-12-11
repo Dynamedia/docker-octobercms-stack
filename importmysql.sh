@@ -1,7 +1,8 @@
 PWD=$(printf '%q\n' "${PWD##*/}")
 PWD=${PWD/[^a-zA-Z\d\s:]/}
 
-CONTAINER=$(docker ps | awk '{print $NF}' | grep mysql | grep $PWD)
+SQL_CONTAINER=$(docker ps | awk '{print $NF}' | grep mysql | grep $PWD)
+OCT_CONTAINER=$(docker ps | awk '{print $NF}' | grep october | grep $PWD)
 
 SQLFILE=$1
 USERNAME=$(grep "^OC_DB_USERNAME" .env | cut -f2- -d=)
@@ -20,8 +21,9 @@ if [ "$TYPE" != "mysql" ] ; then
 fi
 
 if [ ! -z $USERNAME ] && [ ! -z $PASSWORD ] && [ ! -z $DATABASE ] ; then
-    docker exec -i $CONTAINER mysql -u$USERNAME -p$PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DATABASE" > /dev/null 2>&1
-    docker exec -i $CONTAINER mysql -u$USERNAME -p$PASSWORD $DATABASE < $SQLFILE
+    docker exec -i $SQL_CONTAINER mysql -u$USERNAME -p$PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DATABASE" > /dev/null 2>&1
+    docker exec -i $SQL_CONTAINER mysql -u$USERNAME -p$PASSWORD $DATABASE < $SQLFILE
+    docker exec -i $OCT_CONTAINER php artisan cache:clear
 else
     printf "You must set the following variables in your .env file: \n \
     OC_DB_USERNAME\n \
