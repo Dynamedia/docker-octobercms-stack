@@ -1,8 +1,6 @@
 
 PWD=$(printf '%q\n' "${PWD##*/}")
 PWD=${PWD//[^a-zA-Z\d\-\_:]/}
-USER=root
-COMMAND=bash
 
 if [ $1 ] ; then
     COMMAND=$1
@@ -22,7 +20,7 @@ fi
 
 
 echo ""
-echo "Select the container to access..."
+echo "Select the container to print logs"
 echo ""
 
 select CONTAINER in "${CONTAINERS[@]}"
@@ -35,4 +33,4 @@ if [ ! $CONTAINER ] ; then
  exit 1
 fi
 
-docker exec -u $USER -ti $CONTAINER $COMMAND
+docker logs $CONTAINER
