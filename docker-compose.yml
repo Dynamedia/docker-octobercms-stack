@@ -14,7 +14,7 @@ services:
     volumes:
     - ./data/app/storage:/var/www/app/storage/app/
     - ./data/app/plugins:/var/www/app/plugins/
-     - ./data/app/themes:/var/www/app/themes/
+    - ./data/app/themes:/var/www/app/themes/
     # In production you'll want to have https. Use a reverse proxy ssl terminator in front of this container and remove this ports directive
     # and make sure you've done `docker network create reverse-proxy`
     #ports:
