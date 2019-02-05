@@ -1,5 +1,5 @@
 PWD=$(printf '%q\n' "${PWD##*/}")
-PWD=${PWD//[^a-zA-Z\d\s:]/}
+PWD=${PWD//[^a-zA-Z\d\-:]/}
 
 SQL_CONTAINER=$(docker ps | awk '{print $NF}' | grep mysql | grep $PWD)
 OCT_CONTAINER=$(docker ps | awk '{print $NF}' | grep october | grep $PWD)

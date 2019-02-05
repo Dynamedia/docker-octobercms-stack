@@ -1,6 +1,5 @@
 PWD=$(printf '%q\n' "${PWD##*/}")
-PWD=${PWD//[^a-zA-Z\d\s:]/}
-
+PWD=${PWD//[^a-zA-Z\d\-:]/}
 USER=root
 COMMAND=bash
 
