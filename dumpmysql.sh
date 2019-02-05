@@ -1,5 +1,5 @@
 PWD=$(printf '%q\n' "${PWD##*/}")
-PWD=${PWD/[^a-zA-Z\d\s:]/}
+PWD=${PWD//[^a-zA-Z\d\s:]/}
 
 TYPE=$(grep "^OC_DB_CONNECTION" .env | cut -f2- -d=)
 CONTAINER=$(docker ps | awk '{print $NF}' | grep mysql | grep $PWD)
